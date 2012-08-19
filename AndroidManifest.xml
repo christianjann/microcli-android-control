@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jann.microdroid"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="7" 
+              android:targetSdkVersion="7"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" 
+        android:name=".MicrodroidApplication">
+        <activity
+            android:name=".MicrodroidActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity 
+            android:name=".PrefsActivity"
+            android:label="@string/tittlePrefs" />
+        <activity android:name=".DeviceListActivity"
+                  android:label="@string/select_device"
+                  android:theme="@android:style/Theme.Dialog"
+                  android:configChanges="orientation|keyboardHidden" />
+        <activity 
+            android:name=".DeviceActivity"
+            android:label="@string/tittleDeviceActivity" />
+        <activity 
+            android:name=".IOActivity"
+            android:label="@string/tittleIOActivity" />
+        <activity 
+            android:name=".InputActivity"
+            android:label="@string/tittleInputActivity" />
+        <activity 
+            android:name=".OutputActivity"
+            android:label="@string/tittleOutputActivity" />
+        <activity 
+            android:name=".ConsoleActivity"
+            android:label="@string/tittleConsoleActivity" />
+        <activity 
+            android:name=".LogActivity"
+            android:label="@string/tittleLogActivity" />
+        <activity 
+            android:name=".AboutDeviceActivity"
+            android:label="@string/tittleAboutDeviceActivity" />
+        <activity 
+            android:name=".FlagsActivity"
+            android:label="@string/tittleFlagsActivity" />
+        <activity 
+            android:name=".OptionsActivity"
+            android:label="@string/tittleOptionsActivity" />
+         <receiver android:name="StateReceiver" >
+            <intent-filter>
+                <action android:name="com.jann.microdroid.statebroadcast" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

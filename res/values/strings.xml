@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MicrodroidActivity!</string>
+    <string name="app_name">MicroCLI - Microdroid</string>
+    <string name="connect_bluetooth_device">Connect a Bluetooth device</string>
+    <string name="connect_wifi_device">Connect a WiFi device</string>
+    <string name="start">For more information please visit www.jann.cc.</string>
+    <string name="logo_desc">Truck Logo</string>
+    <string name="icon_desc">Device Activity Icon</string>
+    
+    <string name="devmodeTitle">Developer Mode</string>
+    <string name="devmodeSummary">Enable the developer mode.</string>
+    
+    <string name="liveMessagesTitle">Live Messages</string>
+    <string name="liveMessagesSummary">Show realtime status messages.</string>
+    
+    <string name="logCommunicationTitle">Communication Log</string>
+    <string name="logCommunicationSummary">Log the communication between devices and this app.</string>
+    
+    <!-- Options Menu -->
+    <string name="tittlePrefs">Preferences</string>
+    <string name="connect">Connect a device</string>
+     <string name="disconnect">Disconnect device</string>
+     <string name="clearLog">Clear Log</string>
+    
+
+    <!--  BluetoothConsole -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting &#8230;</string>
+    <string name="title_connected">connected</string>
+    <string name="title_connected_to">connected: </string>
+    <string name="title_not_connected">not connected</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices &#8230;</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+    
+    <!-- Activity tittles -->
+    <string name="tittleDeviceActivity">Device</string>
+    <string name="tittleIOActivity">Input/Output</string>
+    <string name="tittleInputActivity">Input</string>
+    <string name="tittleOutputActivity">Output</string>
+    <string name="tittleConsoleActivity">Console</string>
+    <string name="tittleLogActivity">Log</string>
+    <string name="tittleAboutDeviceActivity">About Device</string>
+    <string name="tittleFlagsActivity">Flags</string>
+    <string name="tittleOptionsActivity">Device Options</string>
+    
+    <string name="LED1">LED1</string>
+    <string name="LCD1">LCD1</string>
+    <string name="Option1">Option 1</string>
+    <string name="Flag1">Flag 1</string>
+    <string name="line1">Line 1</string>
+    <string name="line2">Line 2</string>
+    <string name="Button1">User Button</string>
+    
+    <string name="On">On</string>
+    <string name="Off">Off</string>
+    
+</resources>

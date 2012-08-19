@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="0,1" >
+
+  <TextView
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/buttonText"
+      android:layout_height="wrap_content"
+      android:text="@string/Button1" 
+      android:layout_gravity="right|center"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:layout_weight=".70" 
+  android:layout_width="0dip" 
+  android:padding="10dp"
+      />
+
+  <ToggleButton
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/inputButton"
+      android:layout_height="wrap_content"
+      android:layout_gravity="left|center"
+      android:text="@string/Button1"
+      android:layout_weight=".30" 
+  android:layout_width="0dip"
+  android:textOn="@string/On"
+    android:textOff="@string/Off"
+  android:clickable="false"
+  android:focusable="false"
+  android:focusableInTouchMode="false"  />
+
+</LinearLayout>
