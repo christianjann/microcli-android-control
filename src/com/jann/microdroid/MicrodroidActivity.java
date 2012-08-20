@@ -52,6 +52,7 @@ public class MicrodroidActivity extends Activity
 
     private static final boolean USE_BLUETOOTH = false;
     private static final boolean RUN_IN_EMULATOR = true;
+    private static final boolean CHECK_IP_DNS = false;
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
@@ -93,11 +94,14 @@ public class MicrodroidActivity extends Activity
 
         microapp = (MicrodroidApplication) getApplication();
         microapp.stopService();
-        if (microapp.openBluetoothAdapter() != 0)
+        if(USE_BLUETOOTH)
         {
-            Toast.makeText(this, "Bluetooth is not available.", Toast.LENGTH_LONG).show();
-            if (USE_BLUETOOTH)
-                finish();
+	        if (microapp.openBluetoothAdapter() != 0)
+	        {
+	            Toast.makeText(this, "Bluetooth is not available.", Toast.LENGTH_LONG).show();
+	            if (USE_BLUETOOTH)
+	                finish();
+	        }
         }
     }
 
@@ -226,49 +230,59 @@ public class MicrodroidActivity extends Activity
             {
                 Toast.makeText(MicrodroidActivity.this, "MOBILE Is Connected TO WI-FI!", Toast.LENGTH_SHORT).show();
 
-                WifiInfo info = wifi.getConnectionInfo();
-                if (D)Log.d(TAG, "\n\nWiFi Status: " + info.toString());
-
-                // DhcpInfo is a simple object for retrieving the results of a DHCP request
-                DhcpInfo dhcp = wifi.getDhcpInfo();
-                if (dhcp == null)
+                if(CHECK_IP_DNS)
                 {
-                    Log.d(TAG, "Could not get dhcp info");
-                    return;
-                }
-                if (D)Log.d(TAG, "\n\nWiFi DNS1: " + intToIp(dhcp.dns1));
-
-                String ip_micro_de = "";
-                try
-                {
-                    InetAddress[] hostInetAddress
-                        = InetAddress.getAllByName("micro.de");
-                    String all = "";
-                    for (int i = 0; i < hostInetAddress.length; i++)
-                    {
-                        ip_micro_de = hostInetAddress[i].toString();
-                        all = all + String.valueOf(i) + " : "
-                              + ip_micro_de + "\n";
-                    }
-                    if (D)Log.d(TAG, "\n\nIP Info: " + all);
-
-                }
-                catch (UnknownHostException e)
-                {
-                    e.printStackTrace();
-                }
-
-                if (intToIp(dhcp.dns1).equals("192.168.1.1") && ip_micro_de.equals("wifi.jann.cc/192.168.1.1"))
-                {
-                    microapp.connectionType = MicrodroidApplication.WiFi;
-                    microapp.setupService();
-                    microapp.startService();
-                    return;
+	                WifiInfo info = wifi.getConnectionInfo();
+	                if (D)Log.d(TAG, "\n\nWiFi Status: " + info.toString());
+	
+	                // DhcpInfo is a simple object for retrieving the results of a DHCP request
+	                DhcpInfo dhcp = wifi.getDhcpInfo();
+	                if (dhcp == null)
+	                {
+	                    Log.d(TAG, "Could not get dhcp info");
+	                    return;
+	                }
+	                if (D)Log.d(TAG, "\n\nWiFi DNS1: " + intToIp(dhcp.dns1));
+	
+	                String ip_micro_de = "";
+	                try
+	                {
+	                    InetAddress[] hostInetAddress
+	                        = InetAddress.getAllByName("wifi.jann.cc");
+	                    String all = "";
+	                    for (int i = 0; i < hostInetAddress.length; i++)
+	                    {
+	                        ip_micro_de = hostInetAddress[i].toString();
+	                        all = all + String.valueOf(i) + " : "
+	                              + ip_micro_de + "\n";
+	                    }
+	                    if (D)Log.d(TAG, "\n\nIP Info: " + all);
+	
+	                }
+	                catch (UnknownHostException e)
+	                {
+	                    e.printStackTrace();
+	                }
+	
+	                if (intToIp(dhcp.dns1).equals("192.168.1.1") && ip_micro_de.equals("wifi.jann.cc/192.168.1.1"))
+	                {
+	                    microapp.connectionType = MicrodroidApplication.WiFi;
+	                    microapp.setupService();
+	                    microapp.startService();
+	                    return;
+	                }
+	                else
+	                {
+	                    extra = " Error: worng DNS or IP: " + intToIp(dhcp.dns1) + ". You aren't " +
+	                            "connected to the correct hardware.";
+	                }
                 }
                 else
                 {
-                    extra = " Error: worng DNS or IP: " + intToIp(dhcp.dns1) + ". You aren't " +
-                            "connected to the correct hardware.";
+                	microapp.connectionType = MicrodroidApplication.WiFi;
+                    microapp.setupService();
+                    microapp.startService();
+                    return;
                 }
             }
 
