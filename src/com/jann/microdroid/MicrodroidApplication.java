@@ -127,7 +127,7 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
     {
         super.onTerminate();
         // Stop the connection services
-        if (mBluetoothConnectionService != null) mBluetoothConnectionService.stop();
+//        if (mBluetoothConnectionService != null) mBluetoothConnectionService.stop();
         if (mWiFiConnectionService != null)
         {
             mWiFiConnectionService.stop();
@@ -146,13 +146,13 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
     public int openBluetoothAdapter()
     {
         // Get local Bluetooth adapter
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        // If the adapter is null, then Bluetooth is not supported
-        if (mBluetoothAdapter == null)
-        {
-            return -1;
-        }
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//
+//        // If the adapter is null, then Bluetooth is not supported
+//        if (mBluetoothAdapter == null)
+//        {
+//            return -1;
+//        }
 
         return 0;
     }
@@ -172,7 +172,7 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
                 Log.d(TAG, "setup Bluetooth Service");
 
                 // Initialize the BluetoothConnectionService to perform bluetooth connections
-                mBluetoothConnectionService = new BluetoothConnectionService(this, mHandler);
+//                mBluetoothConnectionService = new BluetoothConnectionService(this, mHandler);
             }
         }
         else if (connectionType == WiFi)
@@ -194,11 +194,11 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
             if (mBluetoothConnectionService != null)
             {
                 // Only if the state is STATE_NONE, do we know that we haven't started already
-                if (mBluetoothConnectionService.getState() == BluetoothConnectionService.STATE_NONE)
-                {
-                    // Start the BluetoothConnectionService
-                    mBluetoothConnectionService.start();
-                }
+//                if (mBluetoothConnectionService.getState() == BluetoothConnectionService.STATE_NONE)
+//                {
+//                    // Start the BluetoothConnectionService
+//                    mBluetoothConnectionService.start();
+//                }
             }
         }
         else if (connectionType == WiFi)
@@ -217,7 +217,7 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
 
     public void stopService()
     {
-        if (mBluetoothConnectionService != null) mBluetoothConnectionService.stop();
+//        if (mBluetoothConnectionService != null) mBluetoothConnectionService.stop();
         if (mWiFiConnectionService != null) mWiFiConnectionService.stop();
     }
 
@@ -285,11 +285,11 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
 
     public void pairDevice(String address)
     {
-        // Get the BLuetoothDevice object
-        mDevice = mBluetoothAdapter.getRemoteDevice(address);
-
-        // Attempt to connect to the device
-        mBluetoothConnectionService.connect(mDevice);
+//        // Get the BLuetoothDevice object
+//        mDevice = mBluetoothAdapter.getRemoteDevice(address);
+//
+//        // Attempt to connect to the device
+//        mBluetoothConnectionService.connect(mDevice);
     }
 
     public void addUiUpdateHandler(Handler handler)
@@ -392,24 +392,24 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
     {
         if (connectionType == Bluetooth)
         {
-            // Check that we're actually connected before trying anything
-            if (mBluetoothConnectionService.getState() != BluetoothConnectionService.STATE_CONNECTED)
-            {
-                Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Check that there's actually something to send
-            if (message.length() > 0)
-            {
-                // Get the message bytes and tell the BluetoothConnectionService to write
-                byte[] send = message.getBytes();
-                mBluetoothConnectionService.write(send);
-
-                // Reset out string buffer to zero and clear the edit text field
-                mOutStringBuffer.setLength(0);
-                //mOutEditText.setText(mOutStringBuffer);
-            }
+//            // Check that we're actually connected before trying anything
+//            if (mBluetoothConnectionService.getState() != BluetoothConnectionService.STATE_CONNECTED)
+//            {
+//                Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // Check that there's actually something to send
+//            if (message.length() > 0)
+//            {
+//                // Get the message bytes and tell the BluetoothConnectionService to write
+//                byte[] send = message.getBytes();
+//                mBluetoothConnectionService.write(send);
+//
+//                // Reset out string buffer to zero and clear the edit text field
+//                mOutStringBuffer.setLength(0);
+//                //mOutEditText.setText(mOutStringBuffer);
+//            }
         }
         else if (connectionType == WiFi)
         {
