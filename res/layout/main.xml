@@ -1,43 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="#a9b1ba" >
-<!-- newer Android versions use "match_parent" instead of "fill_parent" -->
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"> 
+
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_marginTop="50dp"
             android:layout_height="160dp"
             android:background="@drawable/micro_logo"
             android:contentDescription="@string/logo_desc"
             android:scaleType="centerInside" />
-     <!--    <Space android:layout_width=fill_parent"
-            android:layout_height="20dp" /> -->
+
         <Button
             android:id="@+id/button1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/connect_bluetooth_device"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
         <Button
             android:id="@+id/button2"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/connect_wifi_device"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000" />
-       <!-- android:background="@drawable/custom_button"   -->
-       
-<!-- android:textColor="#000000"
-android:background="#fdca00" -->
-
-        <!-- <Space android:layout_width="fill_parent"
-            android:layout_height="20dp" /> -->
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -46,9 +35,6 @@ android:background="#fdca00" -->
         android:layout_margin="15dp"
         android:autoLink="web"
         android:text="@string/start"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
     
-    <!-- android:textColorLink="#feca00" -->
-<!-- android:src="@drawable/micro_logo" -->
 </LinearLayout>

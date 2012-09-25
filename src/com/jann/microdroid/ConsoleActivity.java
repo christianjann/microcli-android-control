@@ -22,6 +22,7 @@ package com.jann.microdroid;
  * http://developer.android.com/resources/tutorials/views/hello-tabwidget.html
  */
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -47,7 +47,6 @@ public class ConsoleActivity extends  Activity
 {
     MicrodroidApplication microapp;
     private static final boolean D = true;
-    private TextView mTitle;
     private static final String TAG = "ConsoleActivity";
 
     // Layout Views
@@ -67,15 +66,10 @@ public class ConsoleActivity extends  Activity
         microapp = (MicrodroidApplication) getApplication();
 
         // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.console_main);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 
         // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.title_connected_to);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
-        mTitle.append(microapp.mConnectedDeviceName);
+        setStatus(getString(R.string.title_connected_to, microapp.mConnectedDeviceName));
     }
 
     private void setupConsole()
@@ -138,6 +132,21 @@ public class ConsoleActivity extends  Activity
         }
     };
 
+    private final void setStatus(int resId)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(resId);
+    }
+
+    private final void setStatus(CharSequence subTitle)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(subTitle);
+    }
+
+
 // The Handler that gets information back from the ConnectionService
     private final Handler mHandler = new Handler()
     {
@@ -151,16 +160,15 @@ public class ConsoleActivity extends  Activity
                 switch (msg.arg1)
                 {
                 case BluetoothConnectionService.STATE_CONNECTED:
-                    mTitle.setText(R.string.title_connected_to);
-                    mTitle.append(microapp.mConnectedDeviceName);
+                    setStatus(getString(R.string.title_connected_to, microapp.mConnectedDeviceName));
                     mConsoleArrayAdapter.clear();
                     break;
                 case BluetoothConnectionService.STATE_CONNECTING:
-                    mTitle.setText(R.string.title_connecting);
+                    setStatus(R.string.title_connecting);
                     break;
                 case BluetoothConnectionService.STATE_LISTEN:
                 case BluetoothConnectionService.STATE_NONE:
-                    mTitle.setText(R.string.title_not_connected);
+                    setStatus(R.string.title_not_connected);
                     microapp.stopService();
                     startActivity(new Intent(ConsoleActivity.this, MicrodroidActivity.class));
                     break;

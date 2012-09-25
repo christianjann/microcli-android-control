@@ -18,6 +18,7 @@
 
 package com.jann.microdroid;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -38,7 +38,7 @@ public class DeviceActivity extends Activity
 {
     MicrodroidApplication microapp;
     private static final boolean D = true;
-    private TextView mTitle;
+
     private static final String TAG = "DeviceActivity";
 
     private int[] imageList = { android.R.drawable.ic_menu_manage, android.R.drawable.ic_menu_edit,
@@ -61,16 +61,10 @@ public class DeviceActivity extends Activity
         microapp = (MicrodroidApplication) getApplication();
 
         // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.list);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 
         // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.title_connected_to);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
-        mTitle.append(microapp.mConnectedDeviceName);
-
+        setStatus(getString(R.string.title_connected_to, microapp.mConnectedDeviceName));
 
         ListView lv = (ListView) findViewById(R.id.lvMain);
 
@@ -116,6 +110,20 @@ public class DeviceActivity extends Activity
         });
         microapp.startPingTimer();
 
+    }
+
+    private final void setStatus(int resId)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(resId);
+    }
+
+    private final void setStatus(CharSequence subTitle)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(subTitle);
     }
 
     // The Handler that gets information back from the ConnectionService

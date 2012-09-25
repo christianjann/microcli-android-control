@@ -18,6 +18,7 @@
 
 package com.jann.microdroid;
 
+import android.app.ActionBar;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import android.app.Activity;
@@ -33,17 +34,15 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MicrodroidActivity extends Activity
@@ -66,8 +65,6 @@ public class MicrodroidActivity extends Activity
 
     private static final boolean D = true;
 
-    private TextView mTitle;
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -76,14 +73,7 @@ public class MicrodroidActivity extends Activity
         if (D) Log.e(TAG, "+++ ON CREATE +++");
 
         // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.main);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
-
-        // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.app_name);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
 
         // Find views
         connectBluetoothButton = (Button) findViewById(R.id.button1);
@@ -94,15 +84,24 @@ public class MicrodroidActivity extends Activity
 
         microapp = (MicrodroidApplication) getApplication();
         microapp.stopService();
-        if(USE_BLUETOOTH)
+        if (USE_BLUETOOTH)
         {
-	        if (microapp.openBluetoothAdapter() != 0)
-	        {
-	            Toast.makeText(this, "Bluetooth is not available.", Toast.LENGTH_LONG).show();
-	            if (USE_BLUETOOTH)
-	                finish();
-	        }
+            if (microapp.openBluetoothAdapter() != 0)
+            {
+                Toast.makeText(this, "Bluetooth is not available.", Toast.LENGTH_LONG).show();
+                if (USE_BLUETOOTH)
+                    finish();
+            }
         }
+
+        // http://stackoverflow.com/questions/12529994/networking-issues-on-honeycomb-and-higher
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        setStatus(R.string.connect);
     }
 
     @Override
@@ -230,56 +229,56 @@ public class MicrodroidActivity extends Activity
             {
                 Toast.makeText(MicrodroidActivity.this, "MOBILE Is Connected TO WI-FI!", Toast.LENGTH_SHORT).show();
 
-                if(CHECK_IP_DNS)
+                if (CHECK_IP_DNS)
                 {
-	                WifiInfo info = wifi.getConnectionInfo();
-	                if (D)Log.d(TAG, "\n\nWiFi Status: " + info.toString());
-	
-	                // DhcpInfo is a simple object for retrieving the results of a DHCP request
-	                DhcpInfo dhcp = wifi.getDhcpInfo();
-	                if (dhcp == null)
-	                {
-	                    Log.d(TAG, "Could not get dhcp info");
-	                    return;
-	                }
-	                if (D)Log.d(TAG, "\n\nWiFi DNS1: " + intToIp(dhcp.dns1));
-	
-	                String ip_micro_de = "";
-	                try
-	                {
-	                    InetAddress[] hostInetAddress
-	                        = InetAddress.getAllByName("wifi.jann.cc");
-	                    String all = "";
-	                    for (int i = 0; i < hostInetAddress.length; i++)
-	                    {
-	                        ip_micro_de = hostInetAddress[i].toString();
-	                        all = all + String.valueOf(i) + " : "
-	                              + ip_micro_de + "\n";
-	                    }
-	                    if (D)Log.d(TAG, "\n\nIP Info: " + all);
-	
-	                }
-	                catch (UnknownHostException e)
-	                {
-	                    e.printStackTrace();
-	                }
-	
-	                if (intToIp(dhcp.dns1).equals("192.168.1.1") && ip_micro_de.equals("wifi.jann.cc/192.168.1.1"))
-	                {
-	                    microapp.connectionType = MicrodroidApplication.WiFi;
-	                    microapp.setupService();
-	                    microapp.startService();
-	                    return;
-	                }
-	                else
-	                {
-	                    extra = " Error: worng DNS or IP: " + intToIp(dhcp.dns1) + ". You aren't " +
-	                            "connected to the correct hardware.";
-	                }
+                    WifiInfo info = wifi.getConnectionInfo();
+                    if (D)Log.d(TAG, "\n\nWiFi Status: " + info.toString());
+
+                    // DhcpInfo is a simple object for retrieving the results of a DHCP request
+                    DhcpInfo dhcp = wifi.getDhcpInfo();
+                    if (dhcp == null)
+                    {
+                        Log.d(TAG, "Could not get dhcp info");
+                        return;
+                    }
+                    if (D)Log.d(TAG, "\n\nWiFi DNS1: " + intToIp(dhcp.dns1));
+
+                    String ip_micro_de = "";
+                    try
+                    {
+                        InetAddress[] hostInetAddress
+                            = InetAddress.getAllByName("wifi.jann.cc");
+                        String all = "";
+                        for (int i = 0; i < hostInetAddress.length; i++)
+                        {
+                            ip_micro_de = hostInetAddress[i].toString();
+                            all = all + String.valueOf(i) + " : "
+                                  + ip_micro_de + "\n";
+                        }
+                        if (D)Log.d(TAG, "\n\nIP Info: " + all);
+
+                    }
+                    catch (UnknownHostException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    if (intToIp(dhcp.dns1).equals("192.168.1.1") && ip_micro_de.equals("wifi.jann.cc/192.168.1.1"))
+                    {
+                        microapp.connectionType = MicrodroidApplication.WiFi;
+                        microapp.setupService();
+                        microapp.startService();
+                        return;
+                    }
+                    else
+                    {
+                        extra = " Error: worng DNS or IP: " + intToIp(dhcp.dns1) + ". You aren't " +
+                                "connected to the correct hardware.";
+                    }
                 }
                 else
                 {
-                	microapp.connectionType = MicrodroidApplication.WiFi;
+                    microapp.connectionType = MicrodroidApplication.WiFi;
                     microapp.setupService();
                     microapp.startService();
                     return;
@@ -353,6 +352,13 @@ public class MicrodroidActivity extends Activity
         }
     };
 
+    private final void setStatus(int resId)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(resId);
+    }
+
     private final Handler mHandler = new Handler()
     {
         @Override
@@ -365,16 +371,16 @@ public class MicrodroidActivity extends Activity
                 switch (msg.arg1)
                 {
                 case BluetoothConnectionService.STATE_CONNECTED:
-                    mTitle.setText(R.string.title_connected);
+                    setStatus(R.string.title_connected);
                     //mTitle.append(mConnectedDeviceName);
                     startActivity(new Intent(MicrodroidActivity.this, DeviceActivity.class));
                     break;
                 case BluetoothConnectionService.STATE_CONNECTING:
-                    mTitle.setText(R.string.title_connecting);
+                    setStatus(R.string.title_connecting);
                     break;
                 case BluetoothConnectionService.STATE_LISTEN:
                 case BluetoothConnectionService.STATE_NONE:
-                    mTitle.setText(R.string.title_not_connected);
+                    setStatus(R.string.title_not_connected);
                     break;
                 }
             }

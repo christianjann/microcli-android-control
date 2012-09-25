@@ -28,6 +28,7 @@ public class PrefsActivity extends PreferenceActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        // TODO https://developer.android.com/reference/android/preference/PreferenceActivity.html
         addPreferencesFromResource(R.xml.prefs);
     }
 

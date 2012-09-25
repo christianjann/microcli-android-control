@@ -23,6 +23,7 @@ package com.jann.microdroid;
  */
 
 import java.util.ArrayList;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +33,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.TextView;
 
 
@@ -40,7 +40,6 @@ public class AboutDeviceActivity extends  Activity
 {
     MicrodroidApplication microapp;
     private static final boolean D = true;
-    private TextView mTitle;
     private static final String TAG = "AboutDeviceActivity";
     private static final int ABOUT_RESPONCE_ID = 123;
 
@@ -53,15 +52,9 @@ public class AboutDeviceActivity extends  Activity
         microapp = (MicrodroidApplication) getApplication();
 
         // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.about_device);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 
-        // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.title_connected_to);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
-        mTitle.append(microapp.mConnectedDeviceName);
+        setStatus(getString(R.string.title_connected_to, microapp.mConnectedDeviceName));
 
         // Find views
         aboutTextView = (TextView) findViewById(R.id.aboutTextView);
@@ -103,6 +96,13 @@ public class AboutDeviceActivity extends  Activity
     {
         super.onDestroy();
         if (D) Log.e(TAG, "--- ON DESTROY ---");
+    }
+
+    private final void setStatus(CharSequence subTitle)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(subTitle);
     }
 
     private final Handler mHandler = new Handler()
@@ -185,5 +185,4 @@ public class AboutDeviceActivity extends  Activity
         }
         return true;
     }
-
 }

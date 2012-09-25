@@ -343,31 +343,31 @@ public class MicrodroidApplication extends Application implements OnSharedPrefer
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
-                if(readMessage.length()>0)
+                if (readMessage.length() > 0)
                 {
-	                mLogArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
-	                if (uiUpdateHandler != null) uiUpdateHandler.obtainMessage(MESSAGE_RAW_BLUETOOTH_RECEIVED,
-	                            readMessage).sendToTarget();
-	                if (mCurrentCommandState == WAITING_FOR_COMMAND_START)
-	                {
-	                    if (readMessage.startsWith(mCurrentCommand))
-	                    {
-	                        mCurrentCommandState = WAITING_FOR_COMMAND_END;
-	                        mResponseArrayList.add(readMessage);
-	                    }
-	                }
-	                else if (mCurrentCommandState == WAITING_FOR_COMMAND_END)
-	                {
-	                    mResponseArrayList.add(readMessage);
-	                    if (readMessage.startsWith("[end]"))
-	                    {
-	                        mCurrentCommandState = NO_COMMAND;
-	                        stopResponseTimeoutTimer();
-	                        if (uiUpdateHandler != null) uiUpdateHandler.obtainMessage(MESSAGE_RESPONSE_COMMAND,
-	                                    mCurrentID, -1, mResponseArrayList.clone()).sendToTarget();
-	                        pollCommandTodoList();
-	                    }
-	                }
+                    mLogArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    if (uiUpdateHandler != null) uiUpdateHandler.obtainMessage(MESSAGE_RAW_BLUETOOTH_RECEIVED,
+                                readMessage).sendToTarget();
+                    if (mCurrentCommandState == WAITING_FOR_COMMAND_START)
+                    {
+                        if (readMessage.startsWith(mCurrentCommand))
+                        {
+                            mCurrentCommandState = WAITING_FOR_COMMAND_END;
+                            mResponseArrayList.add(readMessage);
+                        }
+                    }
+                    else if (mCurrentCommandState == WAITING_FOR_COMMAND_END)
+                    {
+                        mResponseArrayList.add(readMessage);
+                        if (readMessage.startsWith("[end]"))
+                        {
+                            mCurrentCommandState = NO_COMMAND;
+                            stopResponseTimeoutTimer();
+                            if (uiUpdateHandler != null) uiUpdateHandler.obtainMessage(MESSAGE_RESPONSE_COMMAND,
+                                        mCurrentID, -1, mResponseArrayList.clone()).sendToTarget();
+                            pollCommandTodoList();
+                        }
+                    }
                 }
                 break;
             case MESSAGE_DEVICE_NAME:

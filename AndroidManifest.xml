@@ -4,8 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" 
-              android:targetSdkVersion="7"/>
+    <uses-sdk android:minSdkVersion="11" 
+              android:targetSdkVersion="16"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -62,10 +62,5 @@
         <activity 
             android:name=".OptionsActivity"
             android:label="@string/tittleOptionsActivity" />
-         <receiver android:name="StateReceiver" >
-            <intent-filter>
-                <action android:name="com.jann.microdroid.statebroadcast" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>

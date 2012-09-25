@@ -22,7 +22,11 @@ package com.jann.microdroid;
  * http://developer.android.com/resources/tutorials/views/hello-tabwidget.html
  */
 
+// TODO https://developer.android.com/reference/android/app/TabActivity.html
+// android-sdk-linux/samples/android-16/ApiDemos/src/com/example/android/apis/app/FragmentTabs.java
 import android.app.TabActivity;
+
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -32,16 +36,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 
 public class IOActivity extends  TabActivity
 {
     MicrodroidApplication microapp;
     private static final boolean D = true;
-    private TextView mTitle;
     private static final String TAG = "IOActivity";
 
     @Override
@@ -51,15 +52,10 @@ public class IOActivity extends  TabActivity
         microapp = (MicrodroidApplication) getApplication();
 
         // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.io);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
 
         // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.title_connected_to);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
-        mTitle.append(microapp.mConnectedDeviceName);
+        setStatus(getString(R.string.title_connected_to, microapp.mConnectedDeviceName));
 
 
         Resources res = getResources(); // Resource object to get Drawables
@@ -85,6 +81,20 @@ public class IOActivity extends  TabActivity
 
         tabHost.setCurrentTab(0);
 
+    }
+
+    private final void setStatus(int resId)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(resId);
+    }
+
+    private final void setStatus(CharSequence subTitle)
+    {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.setSubtitle(subTitle);
     }
 
     // The Handler that gets information back from the ConnectionService
